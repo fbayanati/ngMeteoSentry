@@ -3,8 +3,6 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import * as Sentry from '@sentry/angular';
 
-// bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
-
 Sentry.init({
   dsn: 'https://9c7efd25b55a953687e35906052c5731@o4509261258293248.ingest.us.sentry.io/4509285372133376',
   // Setting this option to true will send default PII data to Sentry.

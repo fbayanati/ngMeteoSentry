@@ -14,6 +14,9 @@ import * as Sentry from '@sentry/angular';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { firebaseConfig } from '../environments/environment';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -21,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideAnimationsAsync(),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     {
       provide: ErrorHandler,
       useValue: Sentry.createErrorHandler(),
