@@ -1,0 +1,10 @@
+This is a test
+<p>Hello Weather</p>
+@if (weatherData) {
+  <div>
+    <h2>Weather Info</h2>
+    <p>Temperature: {{ weatherData.temperature }}°C</p>
+    <p>Wind Speed: {{ weatherData.windspeed }} km/h</p>
+    <p>Conditions: {{ weatherData.weathercode }}</p>
+  </div>
+}

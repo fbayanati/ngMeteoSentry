@@ -1,0 +1,123 @@
+/* src/app/weather/weather.component.scss */
+.weather-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.weather-header {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  button {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+}
+
+.loading,
+.error {
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+}
+
+.loading {
+  background: #f8f9fa;
+  color: #6c757d;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.weather-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  .weather-icon {
+    font-size: 3rem;
+  }
+
+  .temp {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .details {
+    flex: 1;
+    div {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.daily-cards {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.day-card {
+  min-width: 90px;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+
+  .day-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .day-icon {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .day-temp {
+    display: flex;
+    justify-content: space-around;
+
+    .max {
+      color: #e63946;
+    }
+
+    .min {
+      color: #457b9d;
+    }
+  }
+}

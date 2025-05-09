@@ -1,0 +1,66 @@
+<div class="weather-container">
+  <div class="weather-header">
+    <h2>Weather Forecast</h2>
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="location"
+        placeholder="Enter latitude,longitude"
+        (keyup.enter)="searchWeather()" />
+      <button (click)="searchWeather()">Search</button>
+      <label>
+        <input
+          type="checkbox"
+          [(ngModel)]="useCurrentLocation"
+          (change)="useCurrentLocation && getCurrentLocationWeather()" />
+        Use my current location
+      </label>
+    </div>
+  </div>
+
+  <button (click)="throwTestError()">Test Sentry Error</button>
+
+  @if (loading) {
+    <div class="loading">Loading weather data...</div>
+  }
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (weatherData) {
+    <div class="weather-data">
+      <div class="current-weather">
+        <h3>Current Weather</h3>
+        <div class="weather-card">
+          <div class="weather-icon">{{ getWeatherIcon(weatherData.current.weather_code) }}</div>
+          <div class="temp">{{ weatherData.current.temperature_2m }}°C</div>
+          <div class="details">
+            <div>{{ weatherService.getWeatherDescription(weatherData.current.weather_code) }}</div>
+            <div>Humidity: {{ weatherData.current.relative_humidity_2m }}%</div>
+            <div>Wind: {{ weatherData.current.wind_speed_10m }} km/h</div>
+          </div>
+        </div>
+      </div>
+
+      @if (weatherData.daily) {
+        <div class="daily-weather">
+          <h3>7-Day Forecast</h3>
+          <div class="daily-cards">
+            <div class="day-card" *ngFor="let day of [0, 1, 2, 3, 4, 5, 6]">
+              <div class="day-name">{{ getDayName(day) }}</div>
+              <div class="day-icon">{{ getWeatherIcon(weatherData.daily.weather_code[day]) }}</div>
+              <div class="day-temp">
+                <span class="max">{{ weatherData.daily.temperature_2m_max[day] }}°</span>
+                <span class="min">{{ weatherData.daily.temperature_2m_min[day] }}°</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <app-hourly-forecast trace="hourly-forecast" [latitude]="latitude" [longitude]="longitude">
+  </app-hourly-forecast>
+</div>

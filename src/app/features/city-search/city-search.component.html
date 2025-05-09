@@ -1,0 +1,33 @@
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearchInput()"
+      placeholder="Search for a city..."
+      class="search-input"
+      aria-label="City search" />
+    @if (searchQuery) {
+      <button (click)="clearSearch()" class="clear-button" aria-label="Clear search">
+        &times;
+      </button>
+    }
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-indicator"><span class="spinner"></span> Searching...</div>
+  }
+
+  @if (searchResults.length > 0) {
+    <ul class="search-results">
+      @for (result of searchResults; track result.raw.place_id) {
+        <li (click)="selectCity(result)" class="result-item">
+          <div class="result-label">{{ result.label }}</div>
+          <div class="result-coordinates">
+            {{ result.y | number: '1.4-4' }}, {{ result.x | number: '1.4-4' }}
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>
