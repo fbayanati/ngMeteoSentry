@@ -1,1 +1,3 @@
-<app-weather trace="weather"></app-weather>
+<app-location-search (locationSelected)="handleLocationSelection($event)"> </app-location-search>
+
+<app-weather trace="weather" [geoLocation]="geoLocation"></app-weather>

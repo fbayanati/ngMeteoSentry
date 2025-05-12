@@ -1,21 +1,6 @@
 <div class="weather-container">
   <div class="weather-header">
-    <h2>Weather Forecast</h2>
-    <div class="search-box">
-      <input
-        type="text"
-        [(ngModel)]="location"
-        placeholder="Enter latitude,longitude"
-        (keyup.enter)="searchWeather()" />
-      <button (click)="searchWeather()">Search</button>
-      <label>
-        <input
-          type="checkbox"
-          [(ngModel)]="useCurrentLocation"
-          (change)="useCurrentLocation && getCurrentLocationWeather()" />
-        Use my current location
-      </label>
-    </div>
+    <h2>Weather Forecast {{ weatherLocation() }}</h2>
   </div>
 
   <button (click)="throwTestError()">Test Sentry Error</button>

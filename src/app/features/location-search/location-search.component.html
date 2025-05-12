@@ -1,0 +1,38 @@
+<div class="search-container">
+  <form (submit)="search($event)">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      name="searchInput"
+      placeholder="Enter city name..." />
+    <button type="submit">Search</button>
+  </form>
+
+  @if (loading()) {
+    <div class="loading">Searching...</div>
+  }
+
+  @if (error()) {
+    <div class="error">Error fetching locations. Please try again.</div>
+  }
+
+  @if (locations().length > 0) {
+    <div class="results">
+      @for (location of locations(); track location.id) {
+        <div class="location-card" (click)="selectLocation(location)">
+          <h3 class="location-card-name">{{ location.name }}</h3>
+          <div class="location-details">
+            @if (location.admin1) {
+              <span class="region">{{ location.admin1 }},</span>
+            }
+            <span class="country">{{ location.country }}</span>
+            <div class="coordinates">
+              <span>Lat: {{ location.latitude | number: '1.4-4' }}</span>
+              <span>Lon: {{ location.longitude | number: '1.4-4' }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

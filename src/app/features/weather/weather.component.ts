@@ -1,9 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherService } from '../services/weather.service';
 import { FormsModule } from '@angular/forms';
 import { HourlyForecastComponent } from '../hourly-forecast/hourly-forecast.component';
 import * as Sentry from '@sentry/angular';
+import { GeoLocation } from '../../core/models';
 
 @Component({
   selector: 'app-weather',
@@ -15,9 +16,20 @@ import * as Sentry from '@sentry/angular';
 @Sentry.TraceClass({ name: 'WeatherComponent' })
 export class WeatherComponent implements OnInit, OnDestroy {
   weatherService = inject(WeatherService);
-
   latitude!: number;
   longitude!: number;
+
+  @Input() set geoLocation(geoLocation: GeoLocation | undefined) {
+    if (geoLocation == null) {
+      return;
+    }
+
+    this.latitude = geoLocation.latitude;
+    this.longitude = geoLocation.longitude;
+    this.location = geoLocation.name ?? '';
+
+    this.fetchWeather(this.latitude, this.longitude);
+  }
 
   weatherData: any;
   loading = false;
@@ -31,6 +43,10 @@ export class WeatherComponent implements OnInit, OnDestroy {
     }
   }
 
+  weatherLocation(): string {
+    return this.location !== '' ? this.location : 'my current location';
+  }
+
   @Sentry.TraceMethod({ name: 'WeatherComponent.getCurrentLocationWeather' })
   getCurrentLocationWeather(): void {
     this.loading = true;
@@ -39,38 +55,24 @@ export class WeatherComponent implements OnInit, OnDestroy {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          console.log(position.coords.latitude);
-          console.log(position.coords.longitude);
-          this.fetchWeather(position.coords.latitude, position.coords.longitude);
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+          this.fetchWeather(this.latitude, this.longitude);
         },
         error => {
-          // console.error('Geolocation error:', error);
           this.loading = false;
-          this.error = 'Unable to retrieve your location. Using default location (Berlin).';
+          this.error = 'Unable to retrieve your location. Using default location.';
           this.fetchWeather(52.52, 13.41);
         }
       );
     } else {
-      this.error = 'Geolocation is not supported by your browser. Using default location (Berlin).';
+      this.error = 'Geolocation is not supported by your browser. Using default location.';
       this.fetchWeather(52.52, 13.41);
-    }
-  }
-
-  searchWeather(): void {
-    if (!this.location) return;
-
-    const coords = this.location.split(',').map(coord => parseFloat(coord.trim()));
-    if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-      this.fetchWeather(coords[0], coords[1]);
-    } else {
-      this.error = 'Please enter coordinates in "latitude,longitude" format';
     }
   }
 
   @Sentry.TraceMethod({ name: 'WeatherComponent.fetchWeather' })
   private fetchWeather(latitude: number, longitude: number): void {
-    this.latitude = latitude;
-    this.longitude = longitude;
     this.weatherService.getWeather(latitude, longitude).subscribe({
       next: data => {
         this.weatherData = data;
